@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %} Expense Tracker {% endblock title %}
+{% block body %} 
+<div class="container my-3">
+    <h2>Enter Your Monthly Expenses</h2>
+    <form action="/dashboard2" method="POST">
+        <div class="mb-3">
+          <label for="mel" class="form-label">Monthly Expense Limit (MEL)</label>
+          <input type="number" name="mel" class="form-control" id="mel" step="0.01" placeholder="Enter your MEL" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="grocery" class="form-label">Grocery</label>
+          <input type="number" name="grocery" class="form-control" id="grocery" step="0.01" placeholder="Enter Grocery expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="transport" class="form-label">Transport</label>
+          <input type="number" name="transport" class="form-control" id="transport" step="0.01" placeholder="Enter Transport expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="education" class="form-label">Education</label>
+          <input type="number" name="education" class="form-control" id="education" step="0.01" placeholder="Enter Education expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="electricity" class="form-label">Electricity</label>
+          <input type="number" name="electricity" class="form-control" id="electricity" step="0.01" placeholder="Enter Electricity expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="water" class="form-label">Water</label>
+          <input type="number" name="water" class="form-control" id="water" step="0.01" placeholder="Enter Water expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="gas" class="form-label">Gas</label>
+          <input type="number" name="gas" class="form-control" id="gas" step="0.01" placeholder="Enter Gas expenses" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="others" class="form-label">Others</label>
+          <input type="number" name="others" class="form-control" id="others" step="0.01" placeholder="Enter Other expenses" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<div class="container my-3">
+    <h2>Expense Summary</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in expense_summary %}
+          <tr>
+            <td>{{ entry.category }}</td>
+            <td>Rs. {{ entry.amount }}</td>
+            <td>{{ entry.percentage | round(2) }}%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="alert alert-info" role="alert">
+      Total Expenses: Rs. {{ total_expenses }}
+    </div>
+    <div class="alert {% if expenses_within_limit %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+      {% if expenses_within_limit %}
+        Your Monthly expense is Rs {{ total_expenses }} which is within limit.
+      {% else %}
+        Your total expenses are exceeding the monthly expense limit by Rs {{ total_expenses - mel }}.
+      {% endif %}
+    </div>
+</div>
+{% endblock body %}
